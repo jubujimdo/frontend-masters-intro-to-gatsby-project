@@ -20,9 +20,19 @@ module.exports = {
                     path: `${__dirname}/src/posts/`,
                   },
                 },
+                'gatsby-remark-images',
                 {
                   resolve: 'gatsby-plugin-mdx',
                   options: {
+                      gatsbyRemarkPlugins: [
+                        {
+                          resolve: 'gatsby-remark-images',
+                          options: {
+                            maxWidth: 1200,
+                            sizeByPixelDensity: true,
+                          },
+                        },
+                 ],
                         defaultLayouts: {
                             posts: require.resolve('./src/components/post-layout.js')
                         }
