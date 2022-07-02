@@ -18,10 +18,26 @@ const data=useStaticQuery(graphql`
             }
         }
     }
+    allSanityEpisode(
+    filter: {youtubeID: {ne: ""}}
+    sort: {order: ASC, fields: date}
+    limit: 20
+  ) {
+    nodes {
+      id
+      title
+      guest {
+        name
+      }
+      gatsbyPath(filePath: "/episode/{SanityEpisode.slug__current}")
     }
+  }
+}
+    
 `);
 
-const posts = data.allMdx.nodes
+const posts = data.allMdx.nodes;
+const episodes = data.allSanityEpisode.nodes;
 
 
 
@@ -42,7 +58,18 @@ const posts = data.allMdx.nodes
             <ul>
                 {posts.map((post)=> <li key={post.id}><Link to={post.slug}>{post.frontmatter.title}</Link>{' '}<small>Posted: {post.frontmatter.date}</small></li>)}
             </ul>
-            {console.log({posts})}
+            <h2>Latest Episodes</h2>
+            <ul>
+                {episodes.map((episode)=>
+                (
+                               <li key={episode.id}>
+                                 <Link to={episode.gatsbyPath}>
+                                   {episode.title} (with {episode.guest?.[0]?.name})
+                                 </Link>
+                               </li>
+                             )
+                )}
+            </ul>
         </Layout>
     );
 }
